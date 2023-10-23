@@ -1,79 +1,74 @@
-const https = require("https");
-const express = require("express");
-const app = express();
-const PORT = process.env.PORT || 3000;
-const TOKEN = process.env.LINE_ACCESS_TOKEN;
+const { handleMessage, handleFollow, handlePostBack, handleJoin} = require('./utils');
 
+const express = require("express");
+const bodyParser = require("body-parser");
+const { LineClient } = require("messaging-api-line");
+require("dotenv").config();
+
+const config = {
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
+  channelSecret:process.env.CHANNEL_SECRET
+};
+const PORT = process.env.PORT || 3000;
+
+// // get accessToken and channelSecret from LINE developers website
+const client = new LineClient({
+  accessToken: process.env.CHANNEL_ACCESS_TOKEN,
+  channelSecret: process.env.CHANNEL_SECRET,
+});
+
+const app = express();
 app.use(express.json());
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
+app.use(bodyParser.json());
+app.use('/static',express.static('static'));
+// app.use(morganMiddleware);
 
 app.get("/", (req, res) => {
   res.sendStatus(200);
 });
 
-app.post("/webhook", function (req, res) {
-    res.send("HTTP POST request sent to the webhook URL!");
-    // If the user sends a message to your bot, send a reply message
-    if (req.body.events[0].type === "message") {
-      // You must stringify reply token and message data to send to the API server
-      const dataString = JSON.stringify({
-        // Define reply token
-        replyToken: req.body.events[0].replyToken,
-        // Define reply messages
-        messages: [
-          {
-            type: "text",
-            text: "Hello, user",
-          },
-          {
-            type: "text",
-            text: "May I help you?",
-          },
-        ],
-      });
-  
-      // Request header. See Messaging API reference for specification
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + TOKEN,
-      };
-  
-      // Options to pass into the request, as defined in the http.request method in the Node.js documentation
-      const webhookOptions = {
-        hostname: "api.line.me",
-        path: "/v2/bot/message/reply",
-        method: "POST",
-        headers: headers,
-        body: dataString,
-      };
-  
-      // When an HTTP POST request of message type is sent to the /webhook endpoint,
-      // we send an HTTP POST request to https://api.line.me/v2/bot/message/reply
-      // that is defined in the webhookOptions variable.
-  
-      // Define our request
-      const request = https.request(webhookOptions, (res) => {
-        res.on("data", (d) => {
-          process.stdout.write(d);
-        });
-      });
-  
-      // Handle error
-      // request.on() is a function that is called back if an error occurs
-      // while sending a request to the API server.
-      request.on("error", (err) => {
-        console.error(err);
-      });
-  
-      // Finally send the request and the data we defined
-      request.write(dataString);
-      request.end();
-    }
+let replyTime;// 抓取response當下的時間
+
+// webhook router
+app.post("/webhook",(req, res) => {
+  Promise
+  .all(req.body.events.map(handleEvent))
+  .then((result) => {
+    res.json(result);
+    const event = new Date();
+    replyTime = event.toLocaleString('zh-TW',{hour12:false});
+    console.log(`Line bot 回覆時間:${replyTime}`);
   });
+});
+
+// 所有 requset 都會經過 handleEvent function
+const handleEvent = (event) => {
+  console.log(event);
+  const dateTime = new Date(event.timestamp);
+  console.log(`User傳訊息的時間:${dateTime.toLocaleString('zh-TW',{hour12: false})}`);
+  switch(event.type){
+    case 'message':
+      handleMessage(event.message,event.replyToken,event.source,event.timestamp);
+      break;
+    case 'follow':
+      handleFollow(event.replyToken);
+      break;
+    case 'postback':
+      handlePostBack(event.postback,event.replyToken,event.source);
+      break;
+    case 'memberJoined':
+    case 'join':
+      handleJoin(event.replyToken,event.source);
+    default:
+      return Promise.resolve(null);
+  };
+
+};// end of handleEvent
 
 app.listen(PORT, () => {
   console.log(`Example app listening at http://localhost:${PORT}`);
