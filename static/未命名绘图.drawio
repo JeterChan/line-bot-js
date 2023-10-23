@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-10-23T09:05:46.031Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36" etag="zdcRRIHqPkdr1FNkwe5R" version="22.0.6" type="github">
+<mxfile host="app.diagrams.net" modified="2023-10-23T09:15:42.651Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36" etag="AYvcopXhivDarifN_c69" version="22.0.6" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
     <mxGraphModel dx="763" dy="419" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -45,8 +45,32 @@
         <mxCell id="61XhHHZvJd8nYWtLTeT4-11" value="user 發起問題" style="whiteSpace=wrap;html=1;rounded=0;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
           <mxGeometry x="395" y="140" width="120" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="61XhHHZvJd8nYWtLTeT4-18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="61XhHHZvJd8nYWtLTeT4-13" target="61XhHHZvJd8nYWtLTeT4-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="61XhHHZvJd8nYWtLTeT4-13" value="將user的userID,&lt;br&gt;提問的time寫入csv" style="rounded=0;whiteSpace=wrap;html=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
           <mxGeometry x="395" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="61XhHHZvJd8nYWtLTeT4-20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="61XhHHZvJd8nYWtLTeT4-17" target="61XhHHZvJd8nYWtLTeT4-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="61XhHHZvJd8nYWtLTeT4-17" value="提供 user 問題選單" style="whiteSpace=wrap;html=1;rounded=0;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="395" y="390" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="61XhHHZvJd8nYWtLTeT4-22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="61XhHHZvJd8nYWtLTeT4-19" target="61XhHHZvJd8nYWtLTeT4-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="61XhHHZvJd8nYWtLTeT4-19" value="將 user 的問題分類,&lt;br&gt;提供RD解決" style="rounded=0;whiteSpace=wrap;html=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="395" y="500" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="61XhHHZvJd8nYWtLTeT4-24" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="61XhHHZvJd8nYWtLTeT4-21" target="61XhHHZvJd8nYWtLTeT4-23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="61XhHHZvJd8nYWtLTeT4-21" value="問題解決後,push 評價表button 給user&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="395" y="610" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="61XhHHZvJd8nYWtLTeT4-23" value="user 填寫完畢後,&lt;br&gt;關閉工單,紀錄完成時間" style="rounded=0;whiteSpace=wrap;html=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="387.5" y="720" width="135" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
