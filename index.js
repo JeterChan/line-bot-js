@@ -61,9 +61,10 @@ const handleEvent = (event) => {
     case 'postback':
       handlePostBack(event.postback,event.replyToken,event.source);
       break;
-    case 'memberJoined':
-    case 'join':
+    case 'memberJoined': // user 加入群組
+    case 'join': // 機器人加入群組
       handleJoin(event.replyToken,event.source);
+      break;
     default:
       return Promise.resolve(null);
   };

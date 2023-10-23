@@ -1,3 +1,4 @@
+const { resolve } = require("app-root-path");
 const { LineClient, Line } = require("messaging-api-line");
 require("dotenv").config();
 
@@ -34,7 +35,7 @@ const handleText = (message,replyToken,source,timestamp) => {
       case 'Who am I' :
       case '我是誰' : 
         client.getUserProfile(source.userId).then((profile) => {
-          // console.log(profile);
+          console.log(profile);
           userId = profile.userId;
           userName = profile.displayName;
           userPictureUrl = profile.pictureUrl;
@@ -44,9 +45,9 @@ const handleText = (message,replyToken,source,timestamp) => {
         });
         break;
       case '我有問題':
-        console.log(message);
-        memberName = GetUserProfile(source);
-        replyMsg = `Hello,${memberName},工單開始時間為:${dateTime.toLocaleString('zh-TW',{hour12: false})}`;
+        memberName = handleProfile(source);
+        console.log(`In the handleText:${memberName}`);
+        replyMsg = `Hello,${memberName},\n工單開始時間為:${dateTime.toLocaleString('zh-TW',{hour12: false})}`;
         replyButton = {
           thumbnailImageUrl : `${imageURL}/question.jpg`,
           title : '請問是哪種問題呢？',
@@ -96,6 +97,9 @@ const handlePostBack = (postback,replyToken,source) => {
     const startProblem = 'haveProblems';
     const joinText = 'action=join';
     const paymentText = 'payment';
+
+    console.log(postbackData); // print user action
+
     switch (postbackData){
         case actionList[0]: // 訂單問題
             replyButton = {
@@ -162,7 +166,7 @@ const handlePostBack = (postback,replyToken,source) => {
             break;
 
         case joinText:
-            GetUserProfile(replyToken,source);
+            // GetUserProfile(replyToken,source);
             break;
 
         case startProblem:
@@ -195,15 +199,16 @@ const handlePayment = (replyToken,source) => {
     });
 }// end of handlePayment
   
+// user / line-bot 加入群組
 const handleJoin = (replyToken,source) => {
     let items = '';
     items = {
-        text:'點擊下方的按鈕讓我更認識你喔！',
+        text:'我是客服小幫手，請先將我『加為好友』！',
         actions:[
             {
-                type:'postback',
+                type:'uri',
                 label:'加我好友解鎖更多功能',
-                data:'action=join',
+                uri:'https://lin.ee/vlkg5Rn',
             },
         ],
     };
@@ -214,15 +219,22 @@ const handleJoin = (replyToken,source) => {
 };
 
 // 抓取 Group Member 的資訊，回傳姓名跟 Member 打招呼
-const GetUserProfile = (source) => {
+const handleProfile = (source) => {
     let memberDisplayName = '';
-    client.getGroupMemberProfile(source.groupId,source.userId).then((member) => {
-        // memberDisplayName = `Hello,${member.displayName}\n有任何疑問歡迎使用對話框底部的快速呼叫按鈕!`;
-        // client.replyText(replyToken,memberProfileMsg);
-        memberDisplayName = member.displayName;
-    });  
-    console.log(memberDisplayName);
-    return memberDisplayName;  
+    return new Promise ((resolve,reject) => {
+        client.getGroupMemberProfile(source.groupId,source.userId).then((member) => {
+            // memberDisplayName = `Hello,${member.displayName}\n有任何疑問歡迎使用對話框底部的快速呼叫按鈕!`;
+            // client.replyText(replyToken,memberProfileMsg);
+            // memberDisplayName = member.displayName;
+            
+            // console.log(memberDisplayName);
+            resolve(member.displayName);
+        }).catch((error) => {
+            reject(error);
+        });  
+    })
+    
 };
+
 
 module.exports = { handleMessage,handlePostBack,handleFollow,handleJoin };
