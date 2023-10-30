@@ -14,6 +14,7 @@
     "@line/bot-sdk": "^8.0.0",
     "app-root-path": "^3.1.0",
     "await": "^0.2.6",
+    "convert-array-to-csv": "^2.0.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "luxon": "^3.4.3",
@@ -22,5 +23,4 @@
     "on-finished": "^2.4.1",
     "winston": "^3.11.0"
   }
-
 }

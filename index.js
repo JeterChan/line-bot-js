@@ -56,7 +56,7 @@ const handleEvent = (event) => {
       handleMessage(event.message,event.replyToken,event.source,event.timestamp);
       break;
     case 'follow':
-      handleFollow(event.replyToken);
+      handleFollow(event.replyToken,event.source);
       break;
     case 'postback':
       handlePostBack(event.postback,event.replyToken,event.source);
