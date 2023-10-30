@@ -233,7 +233,6 @@ const handlePayment = (replyToken,source) => {
         userName = profile.displayName;
         replyMsg = `${userName} 先生/小姐您好，請描述您的問題，我們將會記錄起來並交由客服專員為您服務。`;
         client.replyText(replyToken,replyMsg);
-        closeTask(replyToken,source);
     });
     
 }// end of handlePayment
