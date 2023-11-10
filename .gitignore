@@ -1,4 +1,4 @@
 node_modules/
-Problem/
-ProblemType/
-Profile/
+*Problem
+*ProblemType
+*Profile

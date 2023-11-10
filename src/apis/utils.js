@@ -3,7 +3,6 @@ const { LineClient, Line } = require("messaging-api-line");
 const fs = require("fs");
 const {convertArrayToCSV} = require('convert-array-to-csv');
 const { time } = require("console");
-const { cli } = require("winston/lib/winston/config");
 require("dotenv").config();
 
 let baseURL = process.env.BASE_URL;
@@ -342,6 +341,7 @@ const recordProblems = (userId,time) => {
 const closeTask = (replyToken,time,source) => {
     // 回覆工單已完成，有需要再通知我！
     // 紀錄工單結束時間
+    
     client.replyText(
         replyToken,
         '如果工單已結束，請點擊完成工單按鈕！',
@@ -368,12 +368,14 @@ const closeTask = (replyToken,time,source) => {
             ],
           },
         }
-      );
+      ).then(
+        console.log(`工單結束時間為：${time}`),
+        pushForm('Hello World',source));
 
     // let replyMsg = '';
     // replyMsg = '您的工單已結束，若有問題歡迎提問！';
     // client.replyText(replyToken,replyMsg);
-    console.log(`工單結束時間為：${time}`);
+    
     // recordProblems(source.userId,time);
 }
 
@@ -411,4 +413,13 @@ const recordAction = (userId,postbackData) => {
     }   
 };
 
-module.exports = { handleMessage,handlePostBack,handleFollow,handleJoin };
+// 需要有group ID
+const getGroupName = () => {
+
+}
+
+const pushForm = (groupId,text) => {
+    client.pushText(groupId,text);
+};
+
+module.exports = { handleMessage,handlePostBack,handleFollow,handleJoin,pushForm };
